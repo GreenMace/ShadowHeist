@@ -30,12 +30,16 @@ public class Destination : MonoBehaviour
         }
 
         if (Time.time >= waitUntil) {
-            waitUntil = float.PositiveInfinity;
             finished = true;
         }
     }
     
     public Transform GetTransform() {
         return gameObject.transform;
+    }
+
+    public void Reset() {
+        waitUntil = float.PositiveInfinity;
+        finished = false;
     }
 }

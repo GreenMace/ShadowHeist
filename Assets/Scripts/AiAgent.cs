@@ -8,18 +8,19 @@ public class AiAgent : MonoBehaviour
     public AiStateMachine stateMachine;
     public AiStateId initialState;
 
-    public AIDestinationSetter destinationSetter;
     public AIPath movementController;
     public IAstarAI pathfinder;
     public IAstarAI ai;
 
+    public FieldOfView FoV;
+
     // Start is called before the first frame update
     void Start()
     {
-        destinationSetter = GetComponent<AIDestinationSetter>();
         movementController = GetComponent<AIPath>();
         pathfinder = GetComponent<IAstarAI>();
         ai = GetComponent<IAstarAI>();
+        FoV = GetComponent<FieldOfView>();
 
         stateMachine = new AiStateMachine(this);
         stateMachine.RegisterState(new AiChasePlayerState());

@@ -11,7 +11,7 @@ public class FieldOfView : MonoBehaviour
 
     public GameObject playerRef;
     public LightCheckScript lightScript;
-    public bool CanSeePlayer { get; private set; }
+    public bool canSeePlayer { get; private set; }
 
     // Start is called before the first frame update
     void Start() {
@@ -31,8 +31,8 @@ public class FieldOfView : MonoBehaviour
     private void FOV() {
         Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, radius * lightScript.LightLevel, targetLayer);
 
-        if (CanSeePlayer) {
-            CanSeePlayer = false;
+        if (canSeePlayer) {
+            canSeePlayer = false;
         }
 
         if(rangeCheck.Length <= 0 ) {
@@ -49,7 +49,7 @@ public class FieldOfView : MonoBehaviour
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
         if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer)) {
-            CanSeePlayer = true;
+            canSeePlayer = true;
         }
     }
     /*
@@ -64,7 +64,7 @@ public class FieldOfView : MonoBehaviour
         Gizmos.DrawLine(transform.position, transform.position + angle1 * radius);
         Gizmos.DrawLine(transform.position, transform.position + angle2 * radius);
 
-        if (CanSeePlayer) {
+        if (canSeePlayer) {
             Gizmos.color = Color.green;
             Gizmos.DrawLine(transform.position, playerRef.transform.position);
         }

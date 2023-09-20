@@ -15,19 +15,22 @@ public class AiPatrolState : AiState {
     public void Enter(AiAgent agent) {
         destinations = agent.GetComponent<DestinationCollection>();
         currentDestination = destinations.GetNextDestination();
-        agent.destinationSetter.target = currentDestination.GetTransform();
         agent.movementController.maxSpeed = movementSpeed;
     }
 
     public void Update(AiAgent agent) {
         bool search = false;
 
+        if (agent.FoV.canSeePlayer) {
+            agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
+        }
+
         if (agent.ai.reachedEndOfPath && !(agent.ai.pathPending)) {
             currentDestination.Act(agent);
         }
 
         if (currentDestination.finished) {
-            currentDestination.finished = false;
+            currentDestination.Reset();
             currentDestination = destinations.GetNextDestination();    
             search = true;
         }
@@ -41,6 +44,6 @@ public class AiPatrolState : AiState {
     }
 
     public void Exit(AiAgent agent) {
-
+        currentDestination.Reset();
     }
 }
