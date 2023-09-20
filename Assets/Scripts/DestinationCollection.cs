@@ -19,8 +19,8 @@ public class DestinationCollection : MonoBehaviour
         
     }
 
-    public Destination GetNextDestination() {
-        index += 1;
+    public Destination GetDestination(int i = 0) {
+        index += i;
         index = index % destinations.Length;
         return destinations[index].GetComponent<Destination>();
     }

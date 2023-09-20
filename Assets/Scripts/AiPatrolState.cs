@@ -14,7 +14,7 @@ public class AiPatrolState : AiState {
 
     public void Enter(AiAgent agent) {
         destinations = agent.GetComponent<DestinationCollection>();
-        currentDestination = destinations.GetNextDestination();
+        currentDestination = destinations.GetDestination();
         agent.movementController.maxSpeed = movementSpeed;
     }
 
@@ -31,7 +31,7 @@ public class AiPatrolState : AiState {
 
         if (currentDestination.finished) {
             currentDestination.Reset();
-            currentDestination = destinations.GetNextDestination();    
+            currentDestination = destinations.GetDestination(1);    
             search = true;
         }
 
