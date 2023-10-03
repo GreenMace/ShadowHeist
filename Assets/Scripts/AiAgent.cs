@@ -13,6 +13,7 @@ public class AiAgent : MonoBehaviour
     public IAstarAI ai;
 
     public FieldOfView FoV;
+    public SoundDetection SoundDetect;
 
     // Start is called before the first frame update
     void Start()
@@ -21,6 +22,7 @@ public class AiAgent : MonoBehaviour
         pathfinder = GetComponent<IAstarAI>();
         ai = GetComponent<IAstarAI>();
         FoV = GetComponent<FieldOfView>();
+        SoundDetect = GetComponent<SoundDetection>();
 
         stateMachine = new AiStateMachine(this);
         stateMachine.RegisterState(new AiChasePlayerState());

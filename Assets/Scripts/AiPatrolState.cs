@@ -20,8 +20,8 @@ public class AiPatrolState : AiState {
 
     public void Update(AiAgent agent) {
         bool search = false;
-
-        if (agent.FoV.canSeePlayer) {
+        
+        if (agent.FoV.canSeePlayer || agent.SoundDetect.canHearPlayer) {
             agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
         }
 

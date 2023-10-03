@@ -25,7 +25,7 @@ public class AiChasePlayerState : AiState
     public void Update(AiAgent agent) {
         agent.ai.destination = playerTransform.position;
         
-        if (agent.FoV.canSeePlayer) {
+        if (agent.FoV.canSeePlayer || agent.SoundDetect.canHearPlayer) {
             playerLastSeenTime = Time.time;
         }
 
