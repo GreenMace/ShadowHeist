@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class SoundDetection : MonoBehaviour
 {
-    public float radius = 1;
+    private float radius;
     public LayerMask targetLayer;
     public LayerMask obstructionLayer;
 
@@ -36,6 +36,7 @@ public class SoundDetection : MonoBehaviour
     
     private void Sound()
     {
+        radius = playerRef.GetComponent<PlayerMovement>().soundRadius;
         Collider2D[] rangeCheck = Physics2D.OverlapCircleAll(transform.position, radius , targetLayer);
         
         if (canHearPlayer)
