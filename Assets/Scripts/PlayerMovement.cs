@@ -8,9 +8,12 @@ public class PlayerMovement : MonoBehaviour {
     
     private Vector2 movement;
     private Rigidbody2D rb;
-    [SerializeField] private int speed = 5;
+    [SerializeField] private float normalSpeed = 5;
+    private float activeSpeed = 5;
     public float soundRadius = 1;
-    public float changeSoundRadius = 1;
+    [SerializeField] private float changeSoundRadius = 1;
+    [SerializeField] private float sneackMultiplyer = 0.8f;
+    private bool isSneaking = false;
 
     private void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -22,16 +25,26 @@ public class PlayerMovement : MonoBehaviour {
     }
 
     private void FixedUpdate() {
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+        if (isSneaking)
+        {
+            activeSpeed = normalSpeed * sneackMultiplyer;
+        }
+        else
+        {
+            activeSpeed = normalSpeed;
+        }
+        rb.MovePosition(rb.position + movement * activeSpeed * Time.fixedDeltaTime);
     }
     public void OnSneak(InputAction.CallbackContext context)
     {    
         if (context.started)
         {
-            soundRadius = 0;
+            isSneaking = true;
+            soundRadius = 0.1f;
         }
         if (context.canceled)
         {
+            isSneaking = false;
             soundRadius = changeSoundRadius;
         }
     }

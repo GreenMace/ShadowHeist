@@ -22,7 +22,10 @@ public class AiPatrolState : AiState {
         bool search = false;
         
         if (agent.FoV.canSeePlayer || agent.SoundDetect.canHearPlayer) {
-            agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
+            if (!agent.HUT.underTable || GetId() == AiStateId.ChasePlayer )
+            {
+                agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
+            }
         }
 
         if (agent.ai.reachedEndOfPath && !(agent.ai.pathPending)) {

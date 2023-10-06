@@ -3,12 +3,13 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Loot
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Loot
   - Water
   - UI
   - Light
@@ -40,4 +41,10 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: New Layer 1
+    uniqueID: 1814669995
+    locked: 0
+  - name: New Layer 2
+    uniqueID: 2238295479
     locked: 0

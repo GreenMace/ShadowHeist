@@ -24,9 +24,9 @@ public class Destination : MonoBehaviour
     public void Act(AiAgent agent) {
         if (float.IsPositiveInfinity(waitUntil)) {
             waitUntil = Time.time + waitTime;
-            Debug.Log(Time.time);
-            Debug.Log(waitUntil);
-            Debug.Log(GetTransform().position);
+            //Debug.Log(Time.time);
+            //Debug.Log(waitUntil);
+            //Debug.Log(GetTransform().position);
         }
 
         if (Time.time >= waitUntil) {
