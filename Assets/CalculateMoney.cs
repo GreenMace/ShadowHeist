@@ -1,9 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using TMPro;
-using System;
 
 public class CalculateMoney : MonoBehaviour
 {
@@ -27,5 +25,4 @@ public class CalculateMoney : MonoBehaviour
         }
     }
     
-
 }
