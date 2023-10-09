@@ -3,7 +3,10 @@
 --- !u!78 &1
 TagManager:
   serializedVersion: 2
-  tags: []
+  tags:
+  - Loot
+  - Light
+  - Door
   layers:
   - Default
   - TransparentFX
@@ -11,10 +14,10 @@ TagManager:
   - 
   - Water
   - UI
-  - Light
+  - 
   - Player
   - Obstacle
-  - Half-Obstacle
+  - 
   - 
   - 
   - 
@@ -41,6 +44,6 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
-  - name: Half-Obstacles
-    uniqueID: 3522999355
+  - name: UI
+    uniqueID: 725086085
     locked: 0

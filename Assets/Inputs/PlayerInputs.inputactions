@@ -15,13 +15,22 @@
                     "initialStateCheck": true
                 },
                 {
-                    "name": "Crouch",
-                    "type": "Button",
-                    "id": "12759f78-d3fc-46fe-a1b4-22ae7063b1ec",
+                    "name": "Sneak",
+                    "type": "Value",
+                    "id": "403814b1-c636-4ec6-9ec3-713c082125e0",
                     "expectedControlType": "Button",
                     "processors": "",
-                    "interactions": "",
-                    "initialStateCheck": false
+                    "interactions": "Hold",
+                    "initialStateCheck": true
+                },
+                {
+                    "name": "Interact",
+                    "type": "Button",
+                    "id": "6c60ccfb-5bf9-488f-a254-fdedf35e26f3",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "Press",
+                    "initialStateCheck": true
                 }
             ],
             "bindings": [
@@ -93,12 +102,23 @@
                 },
                 {
                     "name": "",
-                    "id": "c134b393-2ae8-4e83-a18a-237e0642d999",
-                    "path": "<Keyboard>/ctrl",
-                    "interactions": "Press(behavior=2)",
+                    "id": "ea03a713-22a3-4c44-b347-08f1ba6684dd",
+                    "path": "<Keyboard>/shift",
+                    "interactions": "",
                     "processors": "",
                     "groups": "",
-                    "action": "Crouch",
+                    "action": "Sneak",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "c4ca2cd0-ad2a-4cb1-a638-cba55a455b74",
+                    "path": "<Keyboard>/e",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interact",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }

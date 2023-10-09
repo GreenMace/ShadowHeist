@@ -81,9 +81,8 @@ half4 CombinedShapeLightShared(half4 color, half4 mask, half2 lightingUV, half2 
 #endif
     finalOutput.a = color.a;
     
-    //half4 gray = finalOutput;
-    //gray = color*0.02;
-    finalOutput = finalOutput * visionMask + (1 - visionMask) * color;
+    half4 gray = color * 0.02;
+    finalOutput = finalOutput * visionMask + (1 - visionMask) * gray;
     
     finalOutput = finalOutput * _UseSceneLighting + (1 - _UseSceneLighting) * color;
     

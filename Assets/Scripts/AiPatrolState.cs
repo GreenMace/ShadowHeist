@@ -21,9 +21,7 @@ public class AiPatrolState : AiState {
     public void Update(AiAgent agent) {
         bool search = false;
 
-        if (agent.FoV.canSeePlayer) {
-            agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
-        }
+        agent.handleSuspicion();
 
         if (agent.pathfinder.reachedEndOfPath && !(agent.pathfinder.pathPending)) {
             currentDestination.Act(agent);

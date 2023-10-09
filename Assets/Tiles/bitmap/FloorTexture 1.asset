@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: Player
+  m_Name: FloorTexture 1
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: 21300000, guid: 8258ed6c82b01ae42a2ebe7c77ffa1f2, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 0d8867fc1c2e3e74eae3fc22573299c1, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

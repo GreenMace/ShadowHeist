@@ -12,6 +12,13 @@ public class AiAgent : MonoBehaviour
     public IAstarAI pathfinder;
 
     public FieldOfView FoV;
+    public SoundDetection SoundDetect;
+    public HideUnderTable HUT;
+    public GameObject player;
+
+    public float suspicionPercent { get; private set; }
+    public GameObject suspicionMeterRef;
+    public SuspicionMeterScript susScript;
 
     // Start is called before the first frame update
     void Start()
@@ -19,6 +26,12 @@ public class AiAgent : MonoBehaviour
         movementController = GetComponent<AIPath>();
         pathfinder = GetComponent<IAstarAI>();
         FoV = GetComponent<FieldOfView>();
+        SoundDetect = GetComponent<SoundDetection>();
+        player = GameObject.FindGameObjectWithTag("Player");
+        HUT = player.GetComponent<HideUnderTable>();
+
+        suspicionMeterRef = transform.Find("Canvas").gameObject.transform.Find("Suspicion Meter").gameObject;
+        susScript = suspicionMeterRef.GetComponent<SuspicionMeterScript>();
 
         stateMachine = new AiStateMachine(this);
         stateMachine.RegisterState(new AiChasePlayerState());
@@ -30,5 +43,25 @@ public class AiAgent : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
+    }
+
+    public void handleSuspicion() {
+        if ((FoV.canSeePlayer || SoundDetect.canHearPlayer) && (!HUT.underTable || stateMachine.currentState == AiStateId.ChasePlayer)) {
+            suspicionPercent = Mathf.Min((float)(suspicionPercent + 0.4 * Time.deltaTime), 1);
+        } else {
+            suspicionPercent = Mathf.Max((float)(suspicionPercent - 0.2 * Time.deltaTime), 0);
+        }
+
+        if (suspicionPercent == 1) {
+            stateMachine.ChangeState(AiStateId.ChasePlayer);
+        }
+
+
+        if (suspicionPercent > 0) {
+            suspicionMeterRef.SetActive(true);
+            susScript.suspicionPercent = suspicionPercent;
+        } else {
+            suspicionMeterRef.SetActive(false);
+        }
     }
 }

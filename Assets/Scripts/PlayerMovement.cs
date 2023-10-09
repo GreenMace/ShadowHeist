@@ -5,10 +5,16 @@ using UnityEngine.InputSystem;
 
 public class PlayerMovement : MonoBehaviour {
 
+    
     private Vector2 movement;
     public bool crouching = false;
     private Rigidbody2D rb;
-    public float speed = 1f;
+    [SerializeField] private float normalSpeed = 5;
+    private float activeSpeed = 5;
+    public float soundRadius = 1;
+    [SerializeField] private float changeSoundRadius = 1;
+    [SerializeField] private float sneackMultiplyer = 0.8f;
+    private bool isSneaking = false;
 
     public void Awake() {
         rb = GetComponent<Rigidbody2D>();
@@ -16,18 +22,31 @@ public class PlayerMovement : MonoBehaviour {
 
     public void OnMovement(InputAction.CallbackContext context) {
         movement = context.ReadValue<Vector2>();
-
+        
     }
 
-    public void OnCrouch(InputAction.CallbackContext context) {
-        if (context.performed) {
-            crouching = true;
-        } else if (context.canceled) {
-            crouching = false;
+    private void FixedUpdate() {
+        if (isSneaking)
+        {
+            activeSpeed = normalSpeed * sneackMultiplyer;
         }
+        else
+        {
+            activeSpeed = normalSpeed;
+        }
+        rb.MovePosition(rb.position + movement * activeSpeed * Time.fixedDeltaTime);
     }
-
-    public void Update() {
-        rb.MovePosition(rb.position + movement * speed * Time.deltaTime);
+    public void OnSneak(InputAction.CallbackContext context)
+    {    
+        if (context.started)
+        {
+            isSneaking = true;
+            soundRadius = 0.1f;
+        }
+        if (context.canceled)
+        {
+            isSneaking = false;
+            soundRadius = changeSoundRadius;
+        }
     }
 }
