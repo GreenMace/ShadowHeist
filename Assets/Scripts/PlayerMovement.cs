@@ -6,19 +6,28 @@ using UnityEngine.InputSystem;
 public class PlayerMovement : MonoBehaviour {
 
     private Vector2 movement;
+    public bool crouching = false;
     private Rigidbody2D rb;
-    [SerializeField] private int speed = 5;
+    public float speed = 1f;
 
-    private void Awake() {
+    public void Awake() {
         rb = GetComponent<Rigidbody2D>();
     }
 
-    private void OnMovement(InputValue value) {
-        movement = value.Get<Vector2>();
-        
+    public void OnMovement(InputAction.CallbackContext context) {
+        movement = context.ReadValue<Vector2>();
+
     }
 
-    private void FixedUpdate() {
-        rb.MovePosition(rb.position + movement * speed * Time.fixedDeltaTime);
+    public void OnCrouch(InputAction.CallbackContext context) {
+        if (context.performed) {
+            crouching = true;
+        } else if (context.canceled) {
+            crouching = false;
+        }
+    }
+
+    public void Update() {
+        rb.MovePosition(rb.position + movement * speed * Time.deltaTime);
     }
 }

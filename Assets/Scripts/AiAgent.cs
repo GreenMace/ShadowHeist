@@ -10,7 +10,6 @@ public class AiAgent : MonoBehaviour
 
     public AIPath movementController;
     public IAstarAI pathfinder;
-    public IAstarAI ai;
 
     public FieldOfView FoV;
 
@@ -19,7 +18,6 @@ public class AiAgent : MonoBehaviour
     {
         movementController = GetComponent<AIPath>();
         pathfinder = GetComponent<IAstarAI>();
-        ai = GetComponent<IAstarAI>();
         FoV = GetComponent<FieldOfView>();
 
         stateMachine = new AiStateMachine(this);

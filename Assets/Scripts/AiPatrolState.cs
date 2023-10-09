@@ -25,7 +25,7 @@ public class AiPatrolState : AiState {
             agent.stateMachine.ChangeState(AiStateId.ChasePlayer);
         }
 
-        if (agent.ai.reachedEndOfPath && !(agent.ai.pathPending)) {
+        if (agent.pathfinder.reachedEndOfPath && !(agent.pathfinder.pathPending)) {
             currentDestination.Act(agent);
         }
 
@@ -35,10 +35,10 @@ public class AiPatrolState : AiState {
             search = true;
         }
 
-        agent.ai.destination = currentDestination.GetTransform().position;
+        agent.pathfinder.destination = currentDestination.GetTransform().position;
 
         if (search) {
-            agent.ai.SearchPath();
+            agent.pathfinder.SearchPath();
         }
 
     }

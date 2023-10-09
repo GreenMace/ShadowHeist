@@ -7,16 +7,18 @@ public class FieldOfView : MonoBehaviour
     public float radius = 5;
     [Range(1, 360)] public float angle = 45;
     public LayerMask targetLayer;
-    public LayerMask obstructionLayer;
+    public LayerMask obstacleLayer;
 
     public GameObject playerRef;
     public LightCheckScript lightScript;
+    public PlayerMovement movementScript;
     public bool canSeePlayer { get; private set; }
 
     // Start is called before the first frame update
     void Start() {
         playerRef = GameObject.FindGameObjectWithTag("Player");
         lightScript = playerRef.GetComponent<LightCheckScript>();
+        movementScript = playerRef.GetComponent<PlayerMovement>();
         StartCoroutine(FOVCheck());
     }
 
@@ -48,11 +50,16 @@ public class FieldOfView : MonoBehaviour
 
         float distanceToTarget = Vector2.Distance(transform.position, target.position);
 
+        LayerMask obstructionLayer = obstacleLayer;
+        if (movementScript.crouching) {
+            obstructionLayer |= (1 << LayerMask.NameToLayer("Half-Obstacle"));
+        }
+
         if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer)) {
             canSeePlayer = true;
         }
     }
-    /*
+    
     private void OnDrawGizmos() {
         Gizmos.color = Color.white;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
@@ -74,5 +81,5 @@ public class FieldOfView : MonoBehaviour
         angleInDegrees += eulerY;
         return new Vector2(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
     }
-    */
+    
 }

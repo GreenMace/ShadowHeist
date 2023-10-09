@@ -14,7 +14,7 @@ TagManager:
   - Light
   - Player
   - Obstacle
-  - 
+  - Half-Obstacle
   - 
   - 
   - 
@@ -40,4 +40,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: Half-Obstacles
+    uniqueID: 3522999355
     locked: 0
