@@ -13,7 +13,7 @@ public class PlayerMovement : MonoBehaviour {
     private float activeSpeed = 5;
     public float soundRadius = 1;
     [SerializeField] private float changeSoundRadius = 1;
-    [SerializeField] private float sneackMultiplyer = 0.8f;
+    [SerializeField] private float sneakMultiplyer = 0.8f;
     private bool isSneaking = false;
 
     public void Awake() {
@@ -28,7 +28,7 @@ public class PlayerMovement : MonoBehaviour {
     private void FixedUpdate() {
         if (isSneaking)
         {
-            activeSpeed = normalSpeed * sneackMultiplyer;
+            activeSpeed = normalSpeed * sneakMultiplyer;
         }
         else
         {

@@ -36,6 +36,7 @@ public class AiAgent : MonoBehaviour
         stateMachine = new AiStateMachine(this);
         stateMachine.RegisterState(new AiChasePlayerState());
         stateMachine.RegisterState(new AiPatrolState());
+        stateMachine.RegisterState(new AiIdleState());
         stateMachine.ChangeState(initialState);
     }
 
@@ -47,7 +48,7 @@ public class AiAgent : MonoBehaviour
 
     public void handleSuspicion() {
         if ((FoV.canSeePlayer || SoundDetect.canHearPlayer) && (!HUT.underTable || stateMachine.currentState == AiStateId.ChasePlayer)) {
-            suspicionPercent = Mathf.Min((float)(suspicionPercent + 0.4 * Time.deltaTime), 1);
+            suspicionPercent = Mathf.Min((float)(suspicionPercent + FoV.lightScript.LightLevel * Time.deltaTime), 1);
         } else {
             suspicionPercent = Mathf.Max((float)(suspicionPercent - 0.2 * Time.deltaTime), 0);
         }

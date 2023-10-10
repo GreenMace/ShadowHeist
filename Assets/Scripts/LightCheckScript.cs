@@ -6,7 +6,7 @@ public class LightCheckScript : MonoBehaviour {
 
     public RenderTexture lightCheckTexture;
     public float LightLevel;
-    public int minLightLevel = 0;
+    public int minLightLevel = 20000;
     public int maxLightLevel = 800000;
 
     // Update is called once per frame

@@ -50,8 +50,8 @@ half4 CombinedShapeLightShared(half4 color, half4 mask, half2 lightingUV, half2 
         shapeLight2 *= dot(processedMask, _ShapeLightMaskFilter2);
     }
 
-    half4 shapeLight2Modulate = shapeLight2 * _ShapeLightBlendFactors2.x;
-    half4 shapeLight2Additive = shapeLight2 * _ShapeLightBlendFactors2.y;
+    half4 shapeLight2Modulate = -shapeLight2 * _ShapeLightBlendFactors2.x;
+    half4 shapeLight2Additive = -shapeLight2 * _ShapeLightBlendFactors2.y;
 #else
     half4 shapeLight2Modulate = 0;
     half4 shapeLight2Additive = 0;
