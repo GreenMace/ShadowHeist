@@ -8,6 +8,12 @@ using UnityEngine.Rendering.Universal;
 public class OpenDoor : MonoBehaviour
 {
     public bool CanInteract = false;
+    SpriteSwitchingScript spriteSwitcher;
+
+    void Start() {
+        spriteSwitcher = GetComponent<SpriteSwitchingScript>();
+    }
+
     private void OnTriggerEnter2D(Collider2D collision)
     {
         if (collision.gameObject.tag.Equals("Player"))
@@ -32,7 +38,8 @@ public class OpenDoor : MonoBehaviour
         if (context.performed && CanInteract)
         {
             gameObject.GetComponent<BoxCollider2D>().enabled = !gameObject.GetComponent<BoxCollider2D>().enabled;
-            gameObject.GetComponent<SpriteRenderer>().enabled = !gameObject.GetComponent<SpriteRenderer>().enabled;
+            //gameObject.GetComponent<SpriteRenderer>().enabled = !gameObject.GetComponent<SpriteRenderer>().enabled;
+            spriteSwitcher.nextSprite();
         }
     }
 }
