@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e2a0660a57db1e74388b46d0b5c92a1a
+guid: b53e7909da0b7cc499ab17ac48be824d
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4055747124022694691
-    second: WallFaceTexture_0
+      213: 8746261949084003767
+    second: BrickPavementTexture_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,7 +139,7 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WallFaceTexture_0
+      name: BrickPavementTexture_0
       rect:
         serializedVersion: 2
         x: 0
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ddca0dd9a7717b7c0800000000000000
-      internalID: -4055747124022694691
+      spriteID: 7bdeaab27e6f06970800000000000000
+      internalID: 8746261949084003767
       vertices: []
       indices: 
       edges: []
@@ -170,7 +170,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      WallFaceTexture_0: -4055747124022694691
+      BrickPavementTexture_0: 8746261949084003767
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

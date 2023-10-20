@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: e2a0660a57db1e74388b46d0b5c92a1a
+guid: ecd738bae95bc224e8caeb54608b3065
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -4055747124022694691
-    second: WallFaceTexture_0
+      213: 5412087903874905699
+    second: GuardUpTexture_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: WallFaceTexture_0
+      name: GuardUpTexture_0
       rect:
         serializedVersion: 2
-        x: 0
-        y: 0
-        width: 256
-        height: 256
+        x: 29
+        y: 59
+        width: 197
+        height: 139
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: ddca0dd9a7717b7c0800000000000000
-      internalID: -4055747124022694691
+      spriteID: 366f6ab26499b1b40800000000000000
+      internalID: 5412087903874905699
       vertices: []
       indices: 
       edges: []
@@ -170,7 +170,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      WallFaceTexture_0: -4055747124022694691
+      GuardUpTexture_0: 5412087903874905699
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
