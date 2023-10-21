@@ -59,7 +59,7 @@ public class FieldOfView : MonoBehaviour
             canSeePlayer = true;
         }
     }
-    /*
+    
     private void OnDrawGizmos() {
         Gizmos.color = Color.white;
         UnityEditor.Handles.DrawWireDisc(transform.position, Vector3.forward, radius);
@@ -76,7 +76,7 @@ public class FieldOfView : MonoBehaviour
             Gizmos.DrawLine(transform.position, playerRef.transform.position);
         }
     }
-    */
+    
     private Vector2 DirectionFromAngle(float eulerY, float angleInDegrees) {
         angleInDegrees += eulerY;
         return new Vector2(Mathf.Sin(angleInDegrees * Mathf.Deg2Rad), Mathf.Cos(angleInDegrees * Mathf.Deg2Rad));
