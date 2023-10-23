@@ -5,12 +5,13 @@ using UnityEngine;
 public class SpriteSwitchingScript : MonoBehaviour
 {
 
+    public bool autoInitialize = false;
     public Sprite[] sprites;
     public Vector3[] translations;
     public Quaternion[] rotations;
 
-    new SpriteRenderer renderer;
-    new Transform transform;
+    public SpriteRenderer renderer;
+    public Transform transform;
 
     int index = 0;
 
@@ -19,7 +20,15 @@ public class SpriteSwitchingScript : MonoBehaviour
     {
         renderer = GetComponent<SpriteRenderer>();
         transform = GetComponent<Transform>();
-        nextSprite();
+        
+        if (autoInitialize) {
+            
+            for (int i = 0; i < sprites.Length; ++i) {
+                SetTransform(i, trans: transform.position, rot: transform.rotation);
+            }
+        }
+        
+        NextSprite();
     }
 
     // Update is called once per frame
@@ -28,11 +37,21 @@ public class SpriteSwitchingScript : MonoBehaviour
         
     }
 
-    public void nextSprite() {
+    public void NextSprite() {
         renderer.sprite = sprites[index];
         transform.position = translations[index];
         transform.rotation = rotations[index];
 
         index = ++index % sprites.Length;
+    }
+
+    public void SetTransform(int index, Vector3? trans = null, Quaternion? rot = null) {
+        if (trans != null) {
+            translations[index] = (Vector3)trans;
+        }
+
+        if (rot != null) {
+            rotations[index] = (Quaternion)rot;
+        }
     }
 }

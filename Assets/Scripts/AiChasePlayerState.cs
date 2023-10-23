@@ -15,14 +15,19 @@ public class AiChasePlayerState : AiState
     }
 
     public void Enter(AiAgent agent) {
+
         if (playerTransform == null) {
-            playerTransform = GameObject.FindGameObjectWithTag("Player").transform;
+            playerTransform = agent.player.transform;
         }
 
         agent.movementController.maxSpeed = movementSpeed;
     }
 
     public void Update(AiAgent agent) {
+        if (Vector3.Distance(playerTransform.position, agent.transform.position) < 3 && agent.FoV.canSeePlayer) {
+            agent.stateMachine.ChangeState(AiStateId.Tackle);
+        }
+
         agent.pathfinder.destination = playerTransform.position;
         
         if (agent.FoV.canSeePlayer || agent.SoundDetect.canHearPlayer) {
@@ -34,7 +39,11 @@ public class AiChasePlayerState : AiState
         }
     }
 
-    public void Exit(AiAgent agent) {
+    public void FixedUpdate(AiAgent agent) {
 
+    }
+
+    public void Exit(AiAgent agent) {
+        agent.pathfinder.SetPath(null);
     }
 }

@@ -11,8 +11,8 @@ public class PlayerMovement : MonoBehaviour {
     private Rigidbody2D rb;
     private GameObject spriteRenderer;
     
-    [SerializeField] private float normalSpeed = 5;
-    private float activeSpeed = 5;
+    [SerializeField] private float normalSpeed = 3;
+    private float activeSpeed;
     public float soundRadius = 1;
     [SerializeField] private float changeSoundRadius = 1;
     [SerializeField] private float sneakMultiplyer = 0.8f;

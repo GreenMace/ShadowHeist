@@ -41,7 +41,13 @@ public class AiPatrolState : AiState {
 
     }
 
+    public void FixedUpdate(AiAgent agent) {
+       
+    }
+
+
     public void Exit(AiAgent agent) {
         currentDestination.Reset();
+        
     }
 }

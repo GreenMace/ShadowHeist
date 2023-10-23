@@ -13,12 +13,19 @@ public class AiAgent : MonoBehaviour
 
     public FieldOfView FoV;
     public SoundDetection SoundDetect;
+    public Rigidbody2D rb;
+    
     public HideUnderTable HUT;
+
     public GameObject player;
+    public SpriteSwitchingScript spriteSwitcher;
 
     public float suspicionPercent { get; private set; }
     public GameObject suspicionMeterRef;
     public SuspicionMeterScript susScript;
+
+    
+    
 
     // Start is called before the first frame update
     void Start()
@@ -29,6 +36,8 @@ public class AiAgent : MonoBehaviour
         SoundDetect = GetComponent<SoundDetection>();
         player = GameObject.FindGameObjectWithTag("Player");
         HUT = player.GetComponent<HideUnderTable>();
+        rb = GetComponent<Rigidbody2D>();
+        spriteSwitcher = GetComponent<SpriteSwitchingScript>();
 
         suspicionMeterRef = transform.Find("Canvas").gameObject.transform.Find("Suspicion Meter").gameObject;
         susScript = suspicionMeterRef.GetComponent<SuspicionMeterScript>();
@@ -37,6 +46,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.RegisterState(new AiChasePlayerState());
         stateMachine.RegisterState(new AiPatrolState());
         stateMachine.RegisterState(new AiIdleState());
+        stateMachine.RegisterState(new AiTackleState());
         stateMachine.ChangeState(initialState);
     }
 
@@ -44,6 +54,10 @@ public class AiAgent : MonoBehaviour
     void Update()
     {
         stateMachine.Update();
+    }
+
+    void FixedUpdate() {
+        stateMachine.FixedUpdate();
     }
 
     public void handleSuspicion() {

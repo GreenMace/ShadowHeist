@@ -15,6 +15,10 @@ public class AiIdleState : AiState {
         agent.handleSuspicion();
     }
 
+    public void FixedUpdate(AiAgent agent) {
+        
+    }
+
     public void Exit(AiAgent agent) {
 
     }
