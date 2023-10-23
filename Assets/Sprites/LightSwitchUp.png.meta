@@ -1,10 +1,10 @@
 fileFormatVersion: 2
-guid: b2b34db8c95476048b6f6c86ddda7967
+guid: f6481c454a93258438eb4a1aec61fef0
 TextureImporter:
   internalIDToNameTable:
   - first:
-      213: -1524758638716039069
-    second: DoorClosedTexture_0
+      213: 3415008032342821276
+    second: LightSwitchUp_0
   externalObjects: {}
   serializedVersion: 13
   mipmaps:
@@ -51,7 +51,7 @@ TextureImporter:
   spriteMeshType: 1
   alignment: 0
   spritePivot: {x: 0.5, y: 0.5}
-  spritePixelsToUnits: 100
+  spritePixelsToUnits: 256
   spriteBorder: {x: 0, y: 0, z: 0, w: 0}
   spriteGenerateFallbackPhysicsShape: 1
   alphaUsage: 1
@@ -139,13 +139,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: DoorClosedTexture_0
+      name: LightSwitchUp_0
       rect:
         serializedVersion: 2
-        x: 20
-        y: 0
-        width: 46
-        height: 100
+        x: 0
+        y: 219
+        width: 49
+        height: 37
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -153,8 +153,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: -1
       bones: []
-      spriteID: 3605f1bb818f6dae0800000000000000
-      internalID: -1524758638716039069
+      spriteID: c9946e046bb846f20800000000000000
+      internalID: 3415008032342821276
       vertices: []
       indices: 
       edges: []
@@ -170,7 +170,7 @@ TextureImporter:
     weights: []
     secondaryTextures: []
     nameFileIdTable:
-      DoorClosedTexture_0: -1524758638716039069
+      LightSwitchUp_0: 3415008032342821276
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

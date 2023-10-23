@@ -8,6 +8,7 @@ public class SpriteSwitchingScript : MonoBehaviour
     public Sprite[] sprites;
     public Vector3[] translations;
     public Quaternion[] rotations;
+
     new SpriteRenderer renderer;
     new Transform transform;
 

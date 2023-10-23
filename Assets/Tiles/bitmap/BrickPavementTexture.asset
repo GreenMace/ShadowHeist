@@ -10,9 +10,9 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 13312, guid: 0000000000000000e000000000000000, type: 0}
-  m_Name: WallFaceTexture
+  m_Name: BrickPavementTexture
   m_EditorClassIdentifier: 
-  m_Sprite: {fileID: -4055747124022694691, guid: e2a0660a57db1e74388b46d0b5c92a1a, type: 3}
+  m_Sprite: {fileID: 8746261949084003767, guid: b53e7909da0b7cc499ab17ac48be824d, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_Transform:
     e00: 1

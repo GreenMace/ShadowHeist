@@ -29,7 +29,7 @@ public class AiPatrolState : AiState {
 
         if (currentDestination.finished) {
             currentDestination.Reset();
-            currentDestination = destinations.GetDestination(1);    
+            currentDestination = destinations.GetDestination(1);
             search = true;
         }
 

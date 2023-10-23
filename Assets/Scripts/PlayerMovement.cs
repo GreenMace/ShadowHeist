@@ -9,6 +9,8 @@ public class PlayerMovement : MonoBehaviour {
     private Vector2 movement;
     public bool crouching = false;
     private Rigidbody2D rb;
+    private GameObject spriteRenderer;
+    
     [SerializeField] private float normalSpeed = 5;
     private float activeSpeed = 5;
     public float soundRadius = 1;
@@ -18,6 +20,7 @@ public class PlayerMovement : MonoBehaviour {
 
     public void Awake() {
         rb = GetComponent<Rigidbody2D>();
+        spriteRenderer = transform.Find("Sprite").gameObject;
     }
 
     public void OnMovement(InputAction.CallbackContext context) {
@@ -35,6 +38,11 @@ public class PlayerMovement : MonoBehaviour {
             activeSpeed = normalSpeed;
         }
         rb.MovePosition(rb.position + movement * activeSpeed * Time.fixedDeltaTime);
+
+        if (movement != Vector2.zero) {
+            Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, movement);
+            spriteRenderer.transform.rotation = toRotation;
+        }
     }
     public void OnSneak(InputAction.CallbackContext context)
     {    

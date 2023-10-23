@@ -34,7 +34,6 @@ public class OpenDoor : MonoBehaviour
     }
     public void OnInteract(InputAction.CallbackContext context)
     {
-        Debug.Log(context);
         if (context.performed && CanInteract)
         {
             gameObject.GetComponent<BoxCollider2D>().enabled = !gameObject.GetComponent<BoxCollider2D>().enabled;
