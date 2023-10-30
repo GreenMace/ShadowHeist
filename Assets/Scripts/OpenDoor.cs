@@ -38,7 +38,7 @@ public class OpenDoor : MonoBehaviour
         {
             gameObject.GetComponent<BoxCollider2D>().enabled = !gameObject.GetComponent<BoxCollider2D>().enabled;
             //gameObject.GetComponent<SpriteRenderer>().enabled = !gameObject.GetComponent<SpriteRenderer>().enabled;
-            spriteSwitcher.nextSprite();
+            spriteSwitcher.NextSprite();
         }
     }
 }

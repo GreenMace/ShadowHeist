@@ -288,6 +288,7 @@ GameObject:
   - component: {fileID: 5367000165748451829}
   - component: {fileID: 7460906394594408530}
   - component: {fileID: 650351988886383332}
+  - component: {fileID: 2598058156080520611}
   m_Layer: 0
   m_Name: Enemy
   m_TagString: Untagged
@@ -450,7 +451,7 @@ CircleCollider2D:
   m_CompositeOperation: 0
   m_CompositeOrder: 0
   m_Offset: {x: 0, y: 0}
-  m_Radius: 0.5
+  m_Radius: 0.3
 --- !u!114 &1241208386936093076
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -541,6 +542,7 @@ MonoBehaviour:
   player: {fileID: 0}
   suspicionMeterRef: {fileID: 0}
   susScript: {fileID: 0}
+  rb: {fileID: 0}
 --- !u!114 &7460906394594408530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -577,3 +579,25 @@ MonoBehaviour:
   playerRef: {fileID: 0}
   gizmoColor: {r: 1, g: 0.92156863, b: 0, a: 1}
   showGizmos: 1
+--- !u!114 &2598058156080520611
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6728525953347796380}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ad51ad241c6733b47bd530a4cd322877, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  autoInitialize: 1
+  sprites:
+  - {fileID: 5412087903874905699, guid: ecd738bae95bc224e8caeb54608b3065, type: 3}
+  - {fileID: -4328928528325126847, guid: 73718b43a5939a24da800f45d8bd1723, type: 3}
+  translations:
+  - {x: 0, y: 0, z: 0}
+  - {x: 0, y: 0, z: 0}
+  rotations:
+  - {x: 0, y: 0, z: 0, w: 0}
+  - {x: 0, y: 0, z: 0, w: 0}
