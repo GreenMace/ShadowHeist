@@ -24,9 +24,6 @@ public class AiAgent : MonoBehaviour
     public GameObject suspicionMeterRef;
     public SuspicionMeterScript susScript;
 
-    
-    
-
     // Start is called before the first frame update
     void Start()
     {
@@ -78,5 +75,9 @@ public class AiAgent : MonoBehaviour
         } else {
             suspicionMeterRef.SetActive(false);
         }
+    }
+
+    public void reset() {
+        stateMachine.ChangeState(initialState);
     }
 }

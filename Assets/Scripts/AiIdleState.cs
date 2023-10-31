@@ -9,6 +9,7 @@ public class AiIdleState : AiState {
     }
 
     public void Enter(AiAgent agent) {
+
     }
 
     public void Update(AiAgent agent) {

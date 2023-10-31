@@ -35,7 +35,7 @@ public class AiChasePlayerState : AiState
         }
 
         if (Time.time - chaseTime > playerLastSeenTime) {
-            agent.stateMachine.ChangeState(AiStateId.Patrol);
+            agent.stateMachine.ChangeState(agent.initialState);
         }
     }
 

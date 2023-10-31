@@ -16,11 +16,16 @@ public class HideUnderTable : MonoBehaviour
     }
     private void OnTriggerEnter2D(Collider2D collision)
     {
-        underTable = true;
+        if (collision.gameObject.tag.Equals("Table")) {
+            underTable = true;
+        }
+        
     }
     private void OnTriggerExit2D(Collider2D collision)
     {
-        underTable = false;
+        if (collision.gameObject.tag.Equals("Table")) {
+            underTable = false;
+        }
     }
 
 

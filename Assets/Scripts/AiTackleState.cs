@@ -5,7 +5,7 @@ using UnityEngine;
 public class AiTackleState : AiState {
 
     public float jumpTime = 0.3f;
-    public float jumpSpeed = 15f;
+    public float jumpSpeed = 10f;
 
     public float getUpTime = 0.5f;
     public float windUpTime = 0.15f;
@@ -16,14 +16,16 @@ public class AiTackleState : AiState {
 
     private Vector2 directionToTarget;
     private float movementSpeed = 0;
+    private GameObject tackleHitbox;
 
     public AiStateId GetId() {
         return AiStateId.Tackle;
     }
 
     public void Enter(AiAgent agent) {
+        tackleHitbox = agent.transform.Find("Tackle Hitbox").gameObject;
+
         agent.pathfinder.canMove = false;
-        agent.rb.constraints = RigidbodyConstraints2D.FreezeRotation;
         agent.rb.velocity = Vector2.zero;
 
         windUpTimeLeft = windUpTime;
@@ -33,7 +35,8 @@ public class AiTackleState : AiState {
         directionToTarget = (agent.player.transform.position - agent.transform.position).normalized;
 
         Quaternion toRotation = Quaternion.LookRotation(Vector3.forward, directionToTarget);
-        agent.transform.rotation = toRotation;
+        agent.rb.SetRotation(toRotation.eulerAngles.z);
+        agent.rb.freezeRotation = true;
     }
 
     public void Update(AiAgent agent) {
@@ -46,8 +49,10 @@ public class AiTackleState : AiState {
         
         if (jumpTimeLeft > 0) {
             if (jumpTimeLeft == jumpTime) {
-                agent.spriteSwitcher.SetTransform(1, trans: agent.transform.position, rot: agent.transform.rotation);
-                agent.spriteSwitcher.NextSprite();
+                agent.spriteSwitcher.SetTransform(1, trans: agent.transform.position, rot: agent.transform.rotation.eulerAngles.z);
+                agent.spriteSwitcher.SpriteByIndex(1);
+                tackleHitbox.SetActive(true);
+
             }
             jumpTimeLeft -= Time.deltaTime;
             movementSpeed = jumpSpeed;
@@ -56,6 +61,9 @@ public class AiTackleState : AiState {
         movementSpeed = 0;
 
         if (getUpTimeLeft > 0) {
+            if (getUpTimeLeft == getUpTime) {
+                tackleHitbox.SetActive(false);
+            }
             getUpTimeLeft -= Time.deltaTime;
             return;
         }
@@ -70,8 +78,9 @@ public class AiTackleState : AiState {
 
     public void Exit(AiAgent agent) {
         agent.pathfinder.canMove = true;
-        agent.rb.constraints = RigidbodyConstraints2D.None;
-        agent.spriteSwitcher.SetTransform(0, trans: agent.transform.position, rot: agent.transform.rotation);
-        agent.spriteSwitcher.NextSprite();
+        agent.rb.freezeRotation = false;
+        agent.spriteSwitcher.SetTransform(0, trans: agent.transform.position, rot: agent.transform.rotation.eulerAngles.z);
+        agent.spriteSwitcher.SpriteByIndex(0);
+        tackleHitbox.SetActive(false);
     }
 }

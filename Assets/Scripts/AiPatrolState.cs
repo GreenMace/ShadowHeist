@@ -38,7 +38,6 @@ public class AiPatrolState : AiState {
         if (search) {
             agent.pathfinder.SearchPath();
         }
-
     }
 
     public void FixedUpdate(AiAgent agent) {
