@@ -472,7 +472,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 6
-  angle: 120
+  angle: 119
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -637,6 +637,7 @@ MonoBehaviour:
   spriteSwitcher: {fileID: 0}
   suspicionMeterRef: {fileID: 0}
   susScript: {fileID: 0}
+  MultiplyLightLevel: 0.5
 --- !u!114 &7460906394594408530
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -693,7 +694,7 @@ MonoBehaviour:
   - {x: 0, y: 0, z: 0}
   - {x: 0, y: 0, z: 0}
   rotations:
-  - {x: 0, y: 0, z: 0, w: 0}
-  - {x: 0, y: 0, z: 0, w: 0}
-  renderer: {fileID: 0}
-  transform: {fileID: 0}
+  - 0
+  - 0
+  spriteRenderer: {fileID: 0}
+  rb: {fileID: 0}
