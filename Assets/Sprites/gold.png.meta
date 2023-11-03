@@ -370,7 +370,18 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      gold_0: -6301429047446442448
+      gold_1: -6116963357262179218
+      gold_10: 1251982216193701722
+      gold_2: -5275974221471470513
+      gold_3: 8413302526757980907
+      gold_4: -5533810949261644772
+      gold_5: 6281173559678341316
+      gold_6: -407856595642065811
+      gold_7: 7915915593761736627
+      gold_8: 2986952904727189007
+      gold_9: -4897505507605704354
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
