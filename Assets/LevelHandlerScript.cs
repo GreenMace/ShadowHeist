@@ -5,6 +5,8 @@ using UnityEngine.SceneManagement;
 
 public class LevelHandlerScript : MonoBehaviour
 {
+    public string nextScene;
+
     public Transform startPoint;
     Transform respawnPoint;
 
@@ -29,7 +31,7 @@ public class LevelHandlerScript : MonoBehaviour
     }
 
     public void Restart() {
-        SceneManager.LoadScene(1);
+        SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
     
     public void Spawn() {
@@ -49,7 +51,7 @@ public class LevelHandlerScript : MonoBehaviour
     }
 
     public void LevelComplete() {
-
+        SceneManager.LoadScene(nextScene);
     }
 
     public void SetRespawnPoint(Transform newRespawnPoint) {
