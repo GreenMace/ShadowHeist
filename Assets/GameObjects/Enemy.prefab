@@ -736,7 +736,7 @@ MonoBehaviour:
   spriteSwitcher: {fileID: 0}
   suspicionMeterRef: {fileID: 0}
   susScript: {fileID: 0}
-  MultiplyLightLevel: 0.5
+  MultiplyLightLevel: 0.8
 --- !u!114 &7460906394594408530
 MonoBehaviour:
   m_ObjectHideFlags: 0
