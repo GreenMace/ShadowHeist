@@ -169,7 +169,8 @@ TextureImporter:
     edges: []
     weights: []
     secondaryTextures: []
-    nameFileIdTable: {}
+    nameFileIdTable:
+      LightBulbWhiteBackgroundIcon_0: -320546782096485359
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 
