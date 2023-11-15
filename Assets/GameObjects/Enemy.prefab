@@ -571,7 +571,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   radius: 6
-  angle: 119
+  angle: 101
   targetLayer:
     serializedVersion: 2
     m_Bits: 128
@@ -736,7 +736,7 @@ MonoBehaviour:
   spriteSwitcher: {fileID: 0}
   suspicionMeterRef: {fileID: 0}
   susScript: {fileID: 0}
-  MultiplyLightLevel: 0.8
+  MultiplyLightLevel: 1
 --- !u!114 &7460906394594408530
 MonoBehaviour:
   m_ObjectHideFlags: 0
