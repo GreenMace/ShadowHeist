@@ -27,6 +27,8 @@ public class GridDisplay : MonoBehaviour {
         _meshFilter.mesh = _mesh;
         _meshRenderer.material = _material;
 
+        _meshRenderer.sortingOrder = 5;
+
         float _startX = 0;
         float _startY = 0;
 

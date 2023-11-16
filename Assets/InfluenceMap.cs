@@ -23,7 +23,7 @@ public interface GridData {
 	float GetValue(int x, int y);
 }
 
-public class InfluenceMap : GridData
+public class InfluenceMap : MonoBehaviour, GridData 
 {
 	List<Propagator> _propagators = new List<Propagator>();
 	List<List<List<Vector2I>>> neighbours = new List<List<List<Vector2I>>>();
@@ -32,23 +32,40 @@ public class InfluenceMap : GridData
 	float[,] _influences;
 	float[,] _influencesBuffer;
 
-	public float Decay { get; set; }
-	public float Momentum { get; set; }
+	public float Decay = 5f; /*{ get; set; }*/
+	public float PosMomentum = 0.1f; /*{ get; set; }*/
+	public float NegMomentum = 0.4f;
 
 	public int Width { get { return _influences.GetLength(0); } }
 	public int Height { get { return _influences.GetLength(1); } }
 
-	public Vector3 origin = Vector3.zero;
 	public float gridsize;
 	public Transform bottomLeft;
 
-	public InfluenceMap(int width, int height, float decay, float momentum)
+	public float _updateFrequency;
+	public GridDisplay display;
+
+	/*public InfluenceMap(int width, int height, float decay, float momentum)
 	{
 		_influences = new float[width, height];
 		_influencesBuffer = new float[width, height];
 		Decay = decay;
 		Momentum = momentum;
+	}*/
+
+	public void Start()
+	{
+		_influences = new float[100, 100];
+		_influencesBuffer = new float[100, 100];
+		
+		SetUpNeighbours(GameObject.Find("Tilemap").gameObject.transform.Find("Wall").gameObject.GetComponent<Tilemap>());
+
+		GridData[] data = { (GridData)this };
+		display.SetGridData(data);
+		display.CreateMesh(bottomLeft.position, gridsize);
+		InvokeRepeating("Propagate", 0.001f, 1.0f / _updateFrequency);
 	}
+
 
 	public float GetValue(int x, int y)
 	{
@@ -59,14 +76,18 @@ public class InfluenceMap : GridData
     {
 		for (int x = 0; x < _influences.GetLength(0); ++x)
         {
+			List<List<Vector2I>> xNeighbours = new List<List<Vector2I>>();
 			for (int y = 0; y < _influences.GetLength(1); ++y)
             {
+				List<Vector2I> retVal = new List<Vector2I>();
 				if (obstacles.HasTile(GetWorldPosition(new Vector2I(x, y, 1))))
                 {
+					xNeighbours.Add(retVal);
 					continue;
+
                 }
 
-				List<Vector2I> retVal = new List<Vector2I>();
+				
 
 				if (x > 0 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x-1, y, 1)))) {
 					retVal.Add(new Vector2I(x - 1, y, 1));
@@ -82,15 +103,16 @@ public class InfluenceMap : GridData
 				if (x > 0 && y < _influences.GetLength(1) - 1 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x - 1, y + 1, 1.4142f)))) retVal.Add(new Vector2I(x - 1, y + 1, 1.4142f));
 				if (x < _influences.GetLength(0) - 1 && y > 0 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x + 1, y - 1, 1.4142f)))) retVal.Add(new Vector2I(x + 1, y - 1, 1.4142f));
 
-				neighbours[x][y] = retVal;
+				xNeighbours.Add(retVal);
 			}
+			neighbours.Add(xNeighbours);
         }
 	}
 
 	public Vector3Int GetWorldPosition(Vector2I pos) {
 		Vector3 temp = new Vector3(pos.x, pos.y, 0) * gridsize;
-		Vector3 worldPos = origin + temp;
-		return Vector3Int.RoundToInt(worldPos);
+		Vector3 worldPos = bottomLeft.position + temp;
+		return Vector3Int.FloorToInt(worldPos);
 	}
 
     public Vector2I GetGridPosition(Vector3 pos) {
@@ -151,15 +173,18 @@ public class InfluenceMap : GridData
 				Vector2I[] neighbors = GetNeighbors(xIdx, yIdx);
 				foreach (Vector2I n in neighbors)
 				{
-					float inf = _influencesBuffer[n.x, n.y] * Mathf.Exp(-Decay * n.d);
+					float inf = _influencesBuffer[n.x, n.y] * Mathf.Exp(-Decay/_updateFrequency * n.d);
 					maxInf = Mathf.Max(inf, maxInf);
 					minInf = Mathf.Min(inf, minInf);
 				}
-
-				if (Mathf.Abs(minInf) > maxInf)
-					_influences[xIdx, yIdx] = Mathf.Lerp(_influencesBuffer[xIdx, yIdx], minInf, Momentum);
+                if (Mathf.Abs(minInf) > maxInf)
+                {
+					_influences[xIdx, yIdx] = Mathf.Lerp(_influencesBuffer[xIdx, yIdx], 0, PosMomentum);
+				}
+				else if (_influencesBuffer[xIdx, yIdx] > maxInf)
+					_influences[xIdx, yIdx] = Mathf.Lerp(_influencesBuffer[xIdx, yIdx], maxInf, NegMomentum);
 				else
-					_influences[xIdx, yIdx] = Mathf.Lerp(_influencesBuffer[xIdx, yIdx], maxInf, Momentum);
+					_influences[xIdx, yIdx] = Mathf.Lerp(_influencesBuffer[xIdx, yIdx], maxInf, PosMomentum);
 			}
 		}
 	}
