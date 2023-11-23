@@ -45,6 +45,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.RegisterState(new AiPatrolState());
         stateMachine.RegisterState(new AiIdleState());
         stateMachine.RegisterState(new AiTackleState());
+        stateMachine.RegisterState(new AiSearchState());
         stateMachine.ChangeState(initialState);
     }
 

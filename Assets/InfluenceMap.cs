@@ -15,6 +15,10 @@ public struct Vector2I
 		y = ny;
 		d = nd;
 	}
+
+	public bool Equals(Vector2I other) {
+		return other.x == x && other.y == y && other.d == d;
+	}
 }
 
 public interface GridData {
@@ -80,44 +84,38 @@ public class InfluenceMap : MonoBehaviour, GridData
 			for (int y = 0; y < _influences.GetLength(1); ++y)
             {
 				List<Vector2I> retVal = new List<Vector2I>();
-				if (obstacles.HasTile(GetWorldPosition(new Vector2I(x, y, 1))))
+				if (!obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x, y, 1)))))
                 {
-					xNeighbours.Add(retVal);
-					continue;
+                    if (x > 0 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x - 1, y, 1))))) {
+                        retVal.Add(new Vector2I(x - 1, y, 1));
+                    }
 
+                    if (x < _influences.GetLength(0) - 1 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x + 1, y))))) retVal.Add(new Vector2I(x + 1, y));
+                    if (y > 0 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x, y - 1))))) retVal.Add(new Vector2I(x, y - 1));
+                    if (y < _influences.GetLength(1) - 1 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x, y + 1))))) retVal.Add(new Vector2I(x, y + 1));
+
+                    // diagonals
+                    if (x > 0 && y > 0 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x - 1, y - 1))))) retVal.Add(new Vector2I(x - 1, y - 1, 1.4142f));
+                    if (x < _influences.GetLength(0) - 1 && y < _influences.GetLength(1) - 1 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x + 1, y + 1))))) retVal.Add(new Vector2I(x + 1, y + 1, 1.4142f));
+                    if (x > 0 && y < _influences.GetLength(1) - 1 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x - 1, y + 1))))) retVal.Add(new Vector2I(x - 1, y + 1, 1.4142f));
+                    if (x < _influences.GetLength(0) - 1 && y > 0 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x + 1, y - 1))))) retVal.Add(new Vector2I(x + 1, y - 1, 1.4142f));
                 }
 
-				
-
-				if (x > 0 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x-1, y, 1)))) {
-					retVal.Add(new Vector2I(x - 1, y, 1));
-				}
-				
-				if (x < _influences.GetLength(0) - 1 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x + 1, y)))) retVal.Add(new Vector2I(x + 1, y));
-				if (y > 0 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x, y - 1)))) retVal.Add(new Vector2I(x, y - 1));
-				if (y < _influences.GetLength(1) - 1 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x, y + 1)))) retVal.Add(new Vector2I(x, y + 1));
-
-				// diagonals
-				if (x > 0 && y > 0 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x - 1, y - 1, 1.4142f)))) retVal.Add(new Vector2I(x - 1, y - 1, 1.4142f));
-				if (x < _influences.GetLength(0) - 1 && y < _influences.GetLength(1) - 1 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x + 1, y + 1, 1.4142f)))) retVal.Add(new Vector2I(x + 1, y + 1, 1.4142f));
-				if (x > 0 && y < _influences.GetLength(1) - 1 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x - 1, y + 1, 1.4142f)))) retVal.Add(new Vector2I(x - 1, y + 1, 1.4142f));
-				if (x < _influences.GetLength(0) - 1 && y > 0 && !obstacles.HasTile(GetWorldPosition(new Vector2I(x + 1, y - 1, 1.4142f)))) retVal.Add(new Vector2I(x + 1, y - 1, 1.4142f));
-
-				xNeighbours.Add(retVal);
+                xNeighbours.Add(retVal);
 			}
 			neighbours.Add(xNeighbours);
         }
 	}
 
-	public Vector3Int GetWorldPosition(Vector2I pos) {
+	public Vector3 GetWorldPosition(Vector2I pos) {
 		Vector3 temp = new Vector3(pos.x, pos.y, 0) * gridsize;
 		Vector3 worldPos = bottomLeft.position + temp;
-		return Vector3Int.FloorToInt(worldPos);
+		return worldPos;
 	}
 
     public Vector2I GetGridPosition(Vector3 pos) {
-		int x = (int)((pos.x - bottomLeft.position.x) / gridsize);
-        int y = (int)((pos.y - bottomLeft.position.y) / gridsize);
+		int x = (int)Mathf.Round((pos.x - bottomLeft.position.x) / gridsize);
+        int y = (int)Mathf.Round((pos.y - bottomLeft.position.y) / gridsize);
 		return new Vector2I(x, y, 1f);
     }
 
@@ -137,6 +135,46 @@ public class InfluenceMap : MonoBehaviour, GridData
 			_influences[pos.x, pos.y] = value;
 			_influencesBuffer[pos.x, pos.y] = value;
 		}
+	}
+
+	public Vector3 getLowestInRangeWorld(Vector3 pos, float range) {
+		return GetWorldPosition(GetLowestInRange(GetGridPosition(pos), range));
+	}
+
+	public Vector2I GetLowestInRange(Vector2I pos, float range) {
+		List<Vector2I> tested = new List<Vector2I>();
+		Queue<Vector2I> toTest = new Queue<Vector2I>();
+		Vector2I lowest = pos;
+
+        Vector2I[] neighbours = GetNeighbors(pos);
+        foreach (Vector2I n in neighbours) {
+			toTest.Enqueue(n);
+		}
+		int i = 0;
+        while (toTest.Count > 0) {
+			i++;
+			Vector2I testing = toTest.Dequeue();
+			tested.Add(testing);
+
+			if (_influences[testing.x, testing.y] < _influences[lowest.x, lowest.y]) {
+				lowest = testing;
+			}
+
+            neighbours = GetNeighbors(testing);
+            foreach (Vector2I n in neighbours) {
+				
+                if (cellsAreWithinRange(pos, n, range) && !toTest.Contains(n) && !tested.Contains(n)) {
+                    toTest.Enqueue(n);
+                }
+            }
+        }
+		
+		//Debug.Log(i + ", " + lowest.x + ", " + lowest.y + ", " + lowest.d);
+        return lowest;
+	}
+
+	private bool cellsAreWithinRange(Vector2I pos1, Vector2I pos2, float range) {
+		return Mathf.Sqrt(Mathf.Pow(pos1.x - pos2.x, 2) + Mathf.Pow(pos1.y - pos2.y, 2)) <= range / gridsize;
 	}
 
 	public void RegisterPropagator(Propagator p)
@@ -201,4 +239,8 @@ public class InfluenceMap : MonoBehaviour, GridData
 		List<Vector2I> retVal = neighbours[x][y];
 		return retVal.ToArray();
 	}
+
+    Vector2I[] GetNeighbors(Vector2I pos) {
+		return GetNeighbors(pos.x, pos.y);
+    }
 }
