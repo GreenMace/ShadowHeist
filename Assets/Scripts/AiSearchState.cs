@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class AiSearchState : AiState {
-    public float movementSpeed = 2;
-    public float searchRange = 7;
+    public float movementSpeed = 2.5f;
+    public float searchRange = 5;
 
     public InfluenceMap searchedMap;
     public Vector3 currentDestination;
@@ -16,6 +16,10 @@ public class AiSearchState : AiState {
     public void Enter(AiAgent agent) {
         searchedMap = GameObject.Find("handelInfluenceMap").GetComponent<InfluenceMap>();
         agent.movementController.maxSpeed = movementSpeed;
+
+        currentDestination = searchedMap.getLowestInRangeWorld(agent.transform.position, searchRange);
+        agent.pathfinder.destination = currentDestination;
+        agent.pathfinder.SearchPath();
     }
 
     public void Update(AiAgent agent) {

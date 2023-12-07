@@ -1,10 +1,10 @@
 using UnityEngine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Tilemaps;
 
-public struct Vector2I
-{
+public class Vector2I : IEquatable<Vector2I> {
 	public int x;
 	public int y;
 	public float d;
@@ -16,10 +16,32 @@ public struct Vector2I
 		d = nd;
 	}
 
-	public bool Equals(Vector2I other) {
-		return other.x == x && other.y == y && other.d == d;
+    public bool Equals(Vector2I other) {
+        if (other == null) {
+            return false;
+        }
+
+        return other.x == this.x && other.y == this.y;
+    }
+};
+
+public class Vector2IEqualityComparer : IEqualityComparer<Vector2I> {
+    public bool Equals(Vector2I? v1, Vector2I? v2) {
+		if (ReferenceEquals(v1, v2)) {
+			return true;
+		}
+
+		if (v1 is null || v2 is null) {
+			return false;
+		}
+
+        return v1.x == v2.x && v1.y == v2.y;
+    }
+
+	public int GetHashCode(Vector2I v) {
+		return v.x ^ v.y;
 	}
-}
+};
 
 public interface GridData {
 	int Width { get; }
@@ -86,10 +108,7 @@ public class InfluenceMap : MonoBehaviour, GridData
 				List<Vector2I> retVal = new List<Vector2I>();
 				if (!obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x, y, 1)))))
                 {
-                    if (x > 0 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x - 1, y, 1))))) {
-                        retVal.Add(new Vector2I(x - 1, y, 1));
-                    }
-
+                    if (x > 0 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x - 1, y, 1))))) retVal.Add(new Vector2I(x - 1, y, 1));
                     if (x < _influences.GetLength(0) - 1 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x + 1, y))))) retVal.Add(new Vector2I(x + 1, y));
                     if (y > 0 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x, y - 1))))) retVal.Add(new Vector2I(x, y - 1));
                     if (y < _influences.GetLength(1) - 1 && !obstacles.HasTile(Vector3Int.FloorToInt(GetWorldPosition(new Vector2I(x, y + 1))))) retVal.Add(new Vector2I(x, y + 1));
@@ -138,7 +157,9 @@ public class InfluenceMap : MonoBehaviour, GridData
 	}
 
 	public Vector3 getLowestInRangeWorld(Vector3 pos, float range) {
-		return GetWorldPosition(GetLowestInRange(GetGridPosition(pos), range));
+		Vector2I gridPos = GetGridPosition(pos);
+        Vector2I lowestInRange = GetLowestInRange(gridPos, range);
+        return GetWorldPosition(lowestInRange);
 	}
 
 	public Vector2I GetLowestInRange(Vector2I pos, float range) {
@@ -147,12 +168,15 @@ public class InfluenceMap : MonoBehaviour, GridData
 		Vector2I lowest = pos;
 
         Vector2I[] neighbours = GetNeighbors(pos);
+
         foreach (Vector2I n in neighbours) {
-			toTest.Enqueue(n);
+			Vector2I nWithDist = new Vector2I(n.x, n.y, n.d);
+			toTest.Enqueue(nWithDist);
 		}
 		int i = 0;
         while (toTest.Count > 0) {
 			i++;
+
 			Vector2I testing = toTest.Dequeue();
 			tested.Add(testing);
 
@@ -162,20 +186,19 @@ public class InfluenceMap : MonoBehaviour, GridData
 
             neighbours = GetNeighbors(testing);
             foreach (Vector2I n in neighbours) {
+                Vector2I nWithDist = new Vector2I(n.x, n.y, n.d + testing.d);
 				
-                if (cellsAreWithinRange(pos, n, range) && !toTest.Contains(n) && !tested.Contains(n)) {
-                    toTest.Enqueue(n);
+                if (nWithDist.d < range / gridsize && !toTest.Contains(nWithDist) && !tested.Contains(nWithDist)) {
+                    //Debug.Log("prev: " + testing.d + ", new: " + nWithDist.d);
+                    //Debug.Log(nWithDist.d);
+                    toTest.Enqueue(nWithDist);
                 }
             }
         }
-		
-		//Debug.Log(i + ", " + lowest.x + ", " + lowest.y + ", " + lowest.d);
+		//Debug.Log(i);
         return lowest;
 	}
 
-	private bool cellsAreWithinRange(Vector2I pos1, Vector2I pos2, float range) {
-		return Mathf.Sqrt(Mathf.Pow(pos1.x - pos2.x, 2) + Mathf.Pow(pos1.y - pos2.y, 2)) <= range / gridsize;
-	}
 
 	public void RegisterPropagator(Propagator p)
 	{
