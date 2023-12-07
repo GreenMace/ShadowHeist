@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine.Tilemaps;
+using Random = UnityEngine.Random;
 
 public class Vector2I : IEquatable<Vector2I> {
 	public int x;
@@ -51,11 +52,11 @@ public interface GridData {
 
 public class InfluenceMap : MonoBehaviour, GridData 
 {
-	List<Propagator> _propagators = new List<Propagator>();
+    List<Propagator> _propagators = new List<Propagator>();
 	List<List<List<Vector2I>>> neighbours = new List<List<List<Vector2I>>>();
+    
 
-
-	float[,] _influences;
+    float[,] _influences;
 	float[,] _influencesBuffer;
 
 	public float Decay = 5f; /*{ get; set; }*/
@@ -156,48 +157,62 @@ public class InfluenceMap : MonoBehaviour, GridData
 		}
 	}
 
-	public Vector3 getLowestInRangeWorld(Vector3 pos, float range) {
+	public Vector3 getLowestInRangeWorld(Vector3 pos, float range, int randomizeAmong = 1) {
 		Vector2I gridPos = GetGridPosition(pos);
-        Vector2I lowestInRange = GetLowestInRange(gridPos, range);
-        return GetWorldPosition(lowestInRange);
+        List<Vector2I> lowestInRange = GetLowestInRange(gridPos, range, randomizeAmong);
+		int index = Random.Range(0, lowestInRange.Count-1);
+        return GetWorldPosition(lowestInRange[index]);
 	}
 
-	public Vector2I GetLowestInRange(Vector2I pos, float range) {
+	public List<Vector2I> GetLowestInRange(Vector2I pos, float range, int num) {
 		List<Vector2I> tested = new List<Vector2I>();
 		Queue<Vector2I> toTest = new Queue<Vector2I>();
-		Vector2I lowest = pos;
+		List<Vector2I> lowest = new List<Vector2I>();
+		List<float> lowestInfs = new List<float>();
+
+        lowest.Add(pos);
+		lowestInfs.Add(_influences[pos.x, pos.y]);
 
         Vector2I[] neighbours = GetNeighbors(pos);
-
         foreach (Vector2I n in neighbours) {
 			Vector2I nWithDist = new Vector2I(n.x, n.y, n.d);
 			toTest.Enqueue(nWithDist);
 		}
-		int i = 0;
-        while (toTest.Count > 0) {
-			i++;
 
+        while (toTest.Count > 0) {
 			Vector2I testing = toTest.Dequeue();
 			tested.Add(testing);
+			float inf = _influences[testing.x, testing.y];
 
-			if (_influences[testing.x, testing.y] < _influences[lowest.x, lowest.y]) {
-				lowest = testing;
-			}
+
+            int index = lowestInfs.FindIndex(x => x > inf);
+			if (index == -1) {
+                lowest.Add(testing);
+                lowestInfs.Add(inf);
+            } else {
+                lowest.Insert(index, testing);
+                lowestInfs.Insert(index, inf);
+            }
+
+            if (lowest.Count > num) {
+				lowest.RemoveAt(lowest.Count - 1);
+                lowestInfs.RemoveAt(lowestInfs.Count - 1);
+            }
 
             neighbours = GetNeighbors(testing);
             foreach (Vector2I n in neighbours) {
                 Vector2I nWithDist = new Vector2I(n.x, n.y, n.d + testing.d);
 				
                 if (nWithDist.d < range / gridsize && !toTest.Contains(nWithDist) && !tested.Contains(nWithDist)) {
-                    //Debug.Log("prev: " + testing.d + ", new: " + nWithDist.d);
-                    //Debug.Log(nWithDist.d);
                     toTest.Enqueue(nWithDist);
                 }
             }
         }
-		//Debug.Log(i);
+
         return lowest;
 	}
+
+	
 
 
 	public void RegisterPropagator(Propagator p)

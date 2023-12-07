@@ -5,6 +5,7 @@ using UnityEngine;
 public class AiSearchState : AiState {
     public float movementSpeed = 2.5f;
     public float searchRange = 5;
+    public int randomAmong = 5;
 
     public InfluenceMap searchedMap;
     public Vector3 currentDestination;
@@ -17,7 +18,7 @@ public class AiSearchState : AiState {
         searchedMap = GameObject.Find("handelInfluenceMap").GetComponent<InfluenceMap>();
         agent.movementController.maxSpeed = movementSpeed;
 
-        currentDestination = searchedMap.getLowestInRangeWorld(agent.transform.position, searchRange);
+        currentDestination = searchedMap.getLowestInRangeWorld(agent.transform.position, searchRange, randomAmong);
         agent.pathfinder.destination = currentDestination;
         agent.pathfinder.SearchPath();
     }
@@ -29,7 +30,7 @@ public class AiSearchState : AiState {
 
         if (agent.pathfinder.reachedEndOfPath && !(agent.pathfinder.pathPending)) {
             search = true;
-            currentDestination = searchedMap.getLowestInRangeWorld(agent.transform.position, searchRange);
+            currentDestination = searchedMap.getLowestInRangeWorld(agent.transform.position, searchRange, randomAmong);
         }
 
         agent.pathfinder.destination = currentDestination;
