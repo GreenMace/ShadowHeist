@@ -812,3 +812,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   _value: 1
   infmap: {fileID: 0}
+  MapName: handelInfluenceMap

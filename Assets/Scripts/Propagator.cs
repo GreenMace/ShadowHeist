@@ -11,11 +11,12 @@ public class Propagator : MonoBehaviour, IPropagator {
     public float Value { get { return _value; } }
     public InfluenceMap infmap;
     bool hasadded = false;
+    public string MapName;
 
     // Start is called before the first frame update
     void Start()
     {
-        infmap = GameObject.Find("handelInfluenceMap").GetComponent<InfluenceMap>();
+        infmap = GameObject.Find(MapName).GetComponent<InfluenceMap>();
         
         
 

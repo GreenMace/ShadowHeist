@@ -7,6 +7,10 @@ public class AiChasePlayerState : AiState
     public Transform playerTransform;
     public float movementSpeed = 3;
 
+    public InfluenceMap searchedMap;
+    public float searchRange = 5;
+    public int randomAmong = 1;
+
     float playerLastSeenTime;
     float chaseTime = 3;
 
@@ -16,6 +20,7 @@ public class AiChasePlayerState : AiState
 
     public void Enter(AiAgent agent) {
 
+        searchedMap = GameObject.Find("handelInfluenceMapPlayer").GetComponent<InfluenceMap>();
         if (playerTransform == null) {
             playerTransform = agent.player.transform;
         }
@@ -24,12 +29,14 @@ public class AiChasePlayerState : AiState
     }
 
     public void Update(AiAgent agent) {
-        if (Vector3.Distance(playerTransform.position, agent.transform.position) < 3 && agent.FoV.canSeePlayer) {
+        if (Vector3.Distance(playerTransform.position, agent.transform.position) < 1 && agent.FoV.canSeePlayer) {
             agent.stateMachine.ChangeState(AiStateId.Tackle);
         }
 
-        agent.pathfinder.destination = playerTransform.position;
-        
+        agent.pathfinder.destination = searchedMap.getHighestInRangeWorld(agent.transform.position, searchRange, randomAmong);
+
+        Debug.Log(agent.pathfinder.destination);
+
         if (agent.FoV.canSeePlayer || agent.SoundDetect.canHearPlayer) {
             playerLastSeenTime = Time.time;
         }

@@ -12,6 +12,7 @@ public class FieldOfView : MonoBehaviour
     public GameObject playerRef;
     public LightCheckScript lightScript;
     public PlayerMovement movementScript;
+    public Propagator propagatorScript;
     public bool canSeePlayer { get; private set; }
 
 
@@ -25,6 +26,7 @@ public class FieldOfView : MonoBehaviour
         playerRef = GameObject.FindGameObjectWithTag("Player");
         lightScript = playerRef.GetComponent<LightCheckScript>();
         movementScript = playerRef.GetComponent<PlayerMovement>();
+        propagatorScript = playerRef.GetComponent<Propagator>();
 
         mesh = new Mesh();
         fieldOfViewIndicator = transform.Find("Field of View").gameObject;
@@ -110,6 +112,7 @@ public class FieldOfView : MonoBehaviour
 
         if (canSeePlayer) {
             canSeePlayer = false;
+            propagatorScript._value = 0;
         }
 
         if(rangeCheck.Length <= 0 ) {
@@ -132,7 +135,9 @@ public class FieldOfView : MonoBehaviour
 
         if (!Physics2D.Raycast(transform.position, directionToTarget, distanceToTarget, obstructionLayer)) {
             canSeePlayer = true;
+            propagatorScript._value = 1;
         }
+        
     }
     /*
     private void OnDrawGizmos() {

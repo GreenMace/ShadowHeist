@@ -163,8 +163,15 @@ public class InfluenceMap : MonoBehaviour, GridData
 		int index = Random.Range(0, lowestInRange.Count-1);
         return GetWorldPosition(lowestInRange[index]);
 	}
+    public Vector3 getHighestInRangeWorld(Vector3 pos, float range, int randomizeAmong = 1)
+    {
+        Vector2I gridPos = GetGridPosition(pos);
+        List<Vector2I> lowestInRange = GetHighestInRange(gridPos, range, randomizeAmong);
+        int index = Random.Range(0, lowestInRange.Count - 1);
+        return GetWorldPosition(lowestInRange[index]);
+    }
 
-	public List<Vector2I> GetLowestInRange(Vector2I pos, float range, int num) {
+    public List<Vector2I> GetLowestInRange(Vector2I pos, float range, int num) {
 		List<Vector2I> tested = new List<Vector2I>();
 		Queue<Vector2I> toTest = new Queue<Vector2I>();
 		List<Vector2I> lowest = new List<Vector2I>();
@@ -212,10 +219,68 @@ public class InfluenceMap : MonoBehaviour, GridData
         return lowest;
 	}
 
-	
+    public List<Vector2I> GetHighestInRange(Vector2I pos, float range, int num)
+    {
+        List<Vector2I> tested = new List<Vector2I>();
+        Queue<Vector2I> toTest = new Queue<Vector2I>();
+        List<Vector2I> highest = new List<Vector2I>();
+        List<float> highestInfs = new List<float>();
+
+        highest.Add(pos);
+        highestInfs.Add(_influences[pos.x, pos.y]);
+
+        Vector2I[] neighbours = GetNeighbors(pos);
+        foreach (Vector2I n in neighbours)
+        {
+            Vector2I nWithDist = new Vector2I(n.x, n.y, n.d);
+            toTest.Enqueue(nWithDist);
+        }
+
+        while (toTest.Count > 0)
+        {
+            Vector2I testing = toTest.Dequeue();
+            tested.Add(testing);
+            float inf = _influences[testing.x, testing.y];
+
+            int index = highestInfs.FindIndex(x => x < inf);  // Change the condition here
+            if (index == -1)
+            {
+                highest.Add(testing);
+                highestInfs.Add(inf);
+            }
+            else
+            {
+                highest.Insert(index, testing);
+                highestInfs.Insert(index, inf);
+            }
+
+            if (highest.Count > num)
+            {
+                highest.RemoveAt(highest.Count - 1);
+                highestInfs.RemoveAt(highestInfs.Count - 1);
+            }
+
+            neighbours = GetNeighbors(testing);
+            foreach (Vector2I n in neighbours)
+            {
+                Vector2I nWithDist = new Vector2I(n.x, n.y, n.d + testing.d);
+
+                if (nWithDist.d < range / gridsize && !toTest.Contains(nWithDist) && !tested.Contains(nWithDist)
+                    && _influences[nWithDist.x, nWithDist.y] > inf)
+                {  // Change the condition here
+                    toTest.Enqueue(nWithDist);
+                }
+            }
+        }
+
+        return highest;
+    }
 
 
-	public void RegisterPropagator(Propagator p)
+
+
+
+    public void RegisterPropagator(Propagator p)
 	{
 		_propagators.Add(p);
 	}
