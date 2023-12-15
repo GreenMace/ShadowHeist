@@ -166,9 +166,9 @@ public class InfluenceMap : MonoBehaviour, GridData
     public Vector3 getHighestInRangeWorld(Vector3 pos, float range, int randomizeAmong = 1)
     {
         Vector2I gridPos = GetGridPosition(pos);
-        List<Vector2I> lowestInRange = GetHighestInRange(gridPos, range, randomizeAmong);
-        int index = Random.Range(0, lowestInRange.Count - 1);
-        return GetWorldPosition(lowestInRange[index]);
+        List<Vector2I> highestInRange = GetHighestInRange(gridPos, range, randomizeAmong);
+        int index = Random.Range(0, highestInRange.Count - 1);
+        return GetWorldPosition(highestInRange[index]);
     }
 
     public List<Vector2I> GetLowestInRange(Vector2I pos, float range, int num) {
