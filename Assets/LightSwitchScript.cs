@@ -7,12 +7,12 @@ using UnityEngine.Rendering.Universal;
 public class LightSwitchScript : MonoBehaviour
 {
     public bool CanInteract = false;
-    private Light2D light;
+    private Light2D light2D;
 
     // Start is called before the first frame update
     void Start()
     {
-        light = transform.parent.gameObject.GetComponent<Light2D>();
+        light2D = transform.parent.gameObject.GetComponent<Light2D>();
     }
 
     private void OnTriggerEnter2D(Collider2D collision) {
@@ -31,7 +31,7 @@ public class LightSwitchScript : MonoBehaviour
     }
     public void OnInteract(InputAction.CallbackContext context) {
         if (context.performed && CanInteract) {
-            light.enabled = !light.enabled;
+            light2D.enabled = !light2D.enabled;
 
         }
     }

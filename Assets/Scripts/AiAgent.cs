@@ -23,9 +23,7 @@ public class AiAgent : MonoBehaviour
     public float suspicionPercent { get; private set; }
     public GameObject suspicionMeterRef;
     public SuspicionMeterScript susScript;
-
-    
-    
+    public float MultiplyLightLevel = 1;
 
     // Start is called before the first frame update
     void Start()
@@ -47,6 +45,7 @@ public class AiAgent : MonoBehaviour
         stateMachine.RegisterState(new AiPatrolState());
         stateMachine.RegisterState(new AiIdleState());
         stateMachine.RegisterState(new AiTackleState());
+        stateMachine.RegisterState(new AiSearchState());
         stateMachine.ChangeState(initialState);
     }
 
@@ -62,7 +61,7 @@ public class AiAgent : MonoBehaviour
 
     public void handleSuspicion() {
         if ((FoV.canSeePlayer || SoundDetect.canHearPlayer) && (!HUT.underTable || stateMachine.currentState == AiStateId.ChasePlayer)) {
-            suspicionPercent = Mathf.Min((float)(suspicionPercent + FoV.lightScript.LightLevel * Time.deltaTime), 1);
+            suspicionPercent = Mathf.Min((float)(suspicionPercent + MultiplyLightLevel * FoV.lightScript.LightLevel * Time.deltaTime), 1);
         } else {
             suspicionPercent = Mathf.Max((float)(suspicionPercent - 0.2 * Time.deltaTime), 0);
         }
@@ -78,5 +77,9 @@ public class AiAgent : MonoBehaviour
         } else {
             suspicionMeterRef.SetActive(false);
         }
+    }
+
+    public void reset() {
+        stateMachine.ChangeState(initialState);
     }
 }

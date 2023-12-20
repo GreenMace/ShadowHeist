@@ -8,6 +8,7 @@ public class LightCheckScript : MonoBehaviour {
     public float LightLevel;
     public float minLightLevel = -0.5f;
     public float maxLightLevel = 10000f;
+    public float MultiplyLight = 1;
 
     // Update is called once per frame
     void Update() {
@@ -39,7 +40,7 @@ public class LightCheckScript : MonoBehaviour {
             LightLevel += 0.2126f * colors[i].r + 0.7152f * colors[i].g + 0.0722f * colors[i].b;
         }
 
-        LightLevel = Mathf.Min(1, LightLevel / maxLightLevel + minLightLevel);
+        LightLevel = Mathf.Min(1, ((MultiplyLight * LightLevel) / maxLightLevel + minLightLevel));
 
         
     }

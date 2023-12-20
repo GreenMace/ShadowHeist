@@ -6,7 +6,8 @@ public enum AiStateId {
     ChasePlayer,
     Patrol,
     Idle,
-    Tackle
+    Tackle,
+    Search,
 }
 
 public interface AiState
